@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "biomecreeper",
+  "version": "${version}",
+  "name": "Biome Creeper",
+  "description": "A small client-side mod to make the Creeper's texture change according to the biome they're in.",
+  "authors": [
+    "D4rkness_King"
+  ],
+  "contact": {
+    "website": "https://github.com/lucaargolo/biome-creeper",
+    "repo": "https://github.com/lucaargolo/biome-creeper"
+  },
+  "license": "MPL-2.0",
+  "icon": "assets/biomecreeper/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "io.github.lucaargolo.biomecreeper.client.BiomeCreeperClient"
+    ]
+  },
+  "mixins": [
+    "biomecreeper.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.14",
+    "fabric": "*",
+    "minecraft": ">=1.19.2"
+  }
+}
