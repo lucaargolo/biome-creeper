@@ -1,5 +1,7 @@
 package io.github.lucaargolo.biomecreeper.client;
 
+import io.github.lucaargolo.biomecreeper.BiomeCreeper;
+import io.github.lucaargolo.biomecreeper.mixed.CreeperEntityMixed;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -14,6 +16,11 @@ import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+
+import java.util.Optional;
 
 public class BiomeCreeperFeatureRenderer<T extends CreeperEntity> extends FeatureRenderer<T, CreeperEntityModel<T>> {
     private final EntityModel<T> model;
@@ -34,7 +41,15 @@ public class BiomeCreeperFeatureRenderer<T extends CreeperEntity> extends Featur
         this.getContextModel().copyStateTo(this.model);
         this.model.animateModel(livingEntity, limbAngle, limbDistance, tickDelta);
         this.model.setAngles(livingEntity, limbAngle, limbDistance, j, k, l);
-        int color = livingEntity.getWorld().getBiome(livingEntity.getBlockPos()).value().getFoliageColor();
+        String biomeString = "";
+        if(BiomeCreeper.CONFIG.persistentBiome && livingEntity instanceof CreeperEntityMixed mixed) {
+            biomeString = mixed.getBiomeString();
+        }
+        Identifier biomeIdentifier = new Identifier(biomeString);
+        World world = livingEntity.getWorld();
+        Optional<Biome> optional = world.getRegistryManager().get(Registry.BIOME_KEY).getOrEmpty(biomeIdentifier);
+        Biome biome = optional.orElse(livingEntity.getWorld().getBiome(livingEntity.getBlockPos()).value());
+        int color = biome.getFoliageColor();
         float r = (color >> 16 & 0xFF) / 255f;
         float g = (color >> 8 & 0xFF) / 255f;
         float b = (color & 0xFF) / 255f ;

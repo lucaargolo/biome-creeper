@@ -13,8 +13,11 @@
   },
   "license": "MPL-2.0",
   "icon": "assets/biomecreeper/icon.png",
-  "environment": "client",
+  "environment": "*",
   "entrypoints": {
+    "main": [
+      "io.github.lucaargolo.biomecreeper.BiomeCreeper"
+    ],
     "client": [
       "io.github.lucaargolo.biomecreeper.client.BiomeCreeperClient"
     ]
