@@ -15,8 +15,8 @@ import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.mob.CreeperEntity;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
@@ -47,7 +47,7 @@ public class BiomeCreeperFeatureRenderer<T extends CreeperEntity> extends Featur
         }
         Identifier biomeIdentifier = new Identifier(biomeString);
         World world = livingEntity.getWorld();
-        Optional<Biome> optional = world.getRegistryManager().get(Registry.BIOME_KEY).getOrEmpty(biomeIdentifier);
+        Optional<Biome> optional = world.getRegistryManager().get(RegistryKeys.BIOME).getOrEmpty(biomeIdentifier);
         Biome biome = optional.orElse(livingEntity.getWorld().getBiome(livingEntity.getBlockPos()).value());
         int color = biome.getFoliageColor();
         float r = (color >> 16 & 0xFF) / 255f;
