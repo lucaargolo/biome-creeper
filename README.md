@@ -1,6 +1,6 @@
 <p align="center"><img src="https://i.imgur.com/w1jiU5z.png" width="128" height="128"></p>
 <h3 align="center">Biome Creeper</h3>
-<p align="center">A small client-side mod to make the Creeper's texture change according to the biome they're in.</p>
+<p align="center">A small mod to make the Creeper's texture change according to the biome they're in.</p>
 <p align="center">
   <a title="Fabric API" href="https://github.com/FabricMC/fabric">
     <img src="https://i.imgur.com/Ol1Tcf8.png" width="151" height="50" />
