@@ -2,11 +2,14 @@ package io.github.lucaargolo.biomecreeper.client;
 
 import io.github.lucaargolo.biomecreeper.BiomeCreeper;
 import io.github.lucaargolo.biomecreeper.mixed.CreeperEntityMixed;
+import io.github.lucaargolo.biomecreeper.mixin.LivingEntityRendererInvoker;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.CreeperEntityRenderer;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.CreeperEntityModel;
@@ -24,12 +27,15 @@ import java.util.Optional;
 
 public class BiomeCreeperFeatureRenderer<T extends CreeperEntity> extends FeatureRenderer<T, CreeperEntityModel<T>> {
     private final EntityModel<T> model;
+    private final MobEntityRenderer<T, CreeperEntityModel<T>> renderer;
 
-    public BiomeCreeperFeatureRenderer(FeatureRendererContext<T, CreeperEntityModel<T>> context, EntityModelLoader loader) {
-        super(context);
+    public BiomeCreeperFeatureRenderer(MobEntityRenderer<T, CreeperEntityModel<T>> renderer, EntityModelLoader loader) {
+        super(renderer);
+        this.renderer = renderer;
         this.model = new CreeperEntityModel<>(loader.getModelPart(EntityModelLayers.CREEPER));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float limbAngle, float limbDistance, float tickDelta, float j, float k, float l) {
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
@@ -53,7 +59,8 @@ public class BiomeCreeperFeatureRenderer<T extends CreeperEntity> extends Featur
         float r = (color >> 16 & 0xFF) / 255f;
         float g = (color >> 8 & 0xFF) / 255f;
         float b = (color & 0xFF) / 255f ;
-        this.model.render(matrixStack, vertexConsumer, i, LivingEntityRenderer.getOverlay(livingEntity, 0.0f), r, g, b, 1.0f);
+        LivingEntityRendererInvoker<T, CreeperEntityModel<T>> invoker = (LivingEntityRendererInvoker<T, CreeperEntityModel<T>>) this.renderer;
+        this.model.render(matrixStack, vertexConsumer, i, LivingEntityRenderer.getOverlay(livingEntity, invoker.invokeGetAnimationCounter(livingEntity, tickDelta)), r, g, b, 1.0f);
     }
 
     @Override

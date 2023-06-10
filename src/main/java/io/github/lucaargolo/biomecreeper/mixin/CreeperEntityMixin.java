@@ -27,10 +27,10 @@ public abstract class CreeperEntityMixin extends HostileEntity implements SkinOv
 
     @Inject(at = @At("TAIL"), method = "tick")
     public void injectSpawnBiome(CallbackInfo ci) {
-        if(!world.isClient && BiomeCreeper.CONFIG.persistentBiome) {
+        if(!getWorld().isClient && BiomeCreeper.CONFIG.persistentBiome) {
             String biomeString = dataTracker.get(BIOME_STRING);
             if (biomeString.isEmpty()) {
-                world.getBiome(getBlockPos()).getKey().ifPresent(biomeRegistryKey -> dataTracker.set(BIOME_STRING, biomeRegistryKey.getValue().toString()));
+                getWorld().getBiome(getBlockPos()).getKey().ifPresent(biomeRegistryKey -> dataTracker.set(BIOME_STRING, biomeRegistryKey.getValue().toString()));
             }
         }
     }
